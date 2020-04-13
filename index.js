@@ -26,8 +26,6 @@ let proof = db.prove([
 ]);
 console.log('proof', proof);
 
-let res = db.verify(proof, [Buffer.from('key1'), Buffer.from('value1')]);
-
 // modify values
 db.batch()
   .put(Buffer.from('key1'), Buffer.from('value3'))
