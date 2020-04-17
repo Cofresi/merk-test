@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Tests for Merk tree",
   "dependencies": {
+    "@dashevo/dpp": "~0.12.0-dev.8",
     "merk": "^2.1.1"
   }
 }
