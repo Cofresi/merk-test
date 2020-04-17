@@ -4,7 +4,6 @@
   "description": "Benchmarks for Merk tree nodejs bindings",
   "dependencies": {
     "@dashevo/dpp": "~0.12.0-dev.8",
-    "benny": "3.6.14",
     "merk": "^2.1.1"
   }
 }
