@@ -1,7 +1,7 @@
 {
   "name": "merk-test",
   "version": "0.0.1",
-  "description": "Tests for Merk tree",
+  "description": "Benchmarks for Merk tree nodejs bindings",
   "dependencies": {
     "@dashevo/dpp": "~0.12.0-dev.8",
     "benny": "3.6.14",
