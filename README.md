@@ -1,2 +1,2 @@
 # merk-test
-Some tests for merk tree
+Some benchmark tests for merk tree
