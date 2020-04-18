@@ -1,4 +1,8 @@
 const merk = require('merk');
+const {
+  performance,
+  PerformanceObserver
+} = require('perf_hooks');
 const getDataContractFixture = require(
   '@dashevo/dpp/lib/test/fixtures/getDataContractFixture',
 );
@@ -10,13 +14,52 @@ const randomId = require(
 const BATCHSIZE = 1000;
 
 // absolute number of documents to insert into db in one run
-const DBSIZE = 100000;
+const DBSIZE = 10000;
 
 // create or load store
 let db = merk('./state.db');
 
 let value1;
 let key1;
+
+function getValue(db, key) {
+  return db.getSync(Buffer.from(key));
+}
+
+function getProof(db, key) {
+  return db.prove([
+    Buffer.from(key)
+  ]);
+}
+
+function updateValue(db, key, value) {
+  db.batch()
+    .put(Buffer.from(key), Buffer.from(value))
+      .commitSync();
+}
+
+function deleteKey(db, key) {
+  db.batch()
+    .delete(Buffer.from(key))
+    .commitSync();
+}
+
+function getRoot(db) {
+  return db.rootHash();
+}
+
+const benchGetValue = performance.timerify(getValue);
+const benchGetProof = performance.timerify(getProof);
+const benchUpdateValue = performance.timerify(updateValue);
+const benchDeleteKey = performance.timerify(deleteKey);
+const benchGetRoot = performance.timerify(getRoot);
+
+const obs = new PerformanceObserver((list) => {
+  list.getEntries().forEach((entry) => {
+    console.log(entry.name, entry.duration);
+  });
+  obs.disconnect();
+});
 
 // get Merkle root
 let initialRoot = db.rootHash();
@@ -45,28 +88,30 @@ for (i = 0; i < DBSIZE / BATCHSIZE; i++) {
   // **** BENCHMARK OPS ****
 
   // get value
-    value1 = db.getSync(Buffer.from(key1));
+    value1 = benchGetValue(db, key1);
+
+  obs.observe({ entryTypes: ['function'] });
 
   // create merkle proof
-    const proof1 = db.prove([
-      Buffer.from(key1)
-    ]);
+    const proof1 = benchGetProof(db, key1);
     console.log('proof1', proof1);
     console.log(`proof size ${proof1.length} bytes, ${proof1.length/1000} kb`);
 
+  obs.observe({ entryTypes: ['function'] });
+
   // update value
-    db.batch()
-      .put(Buffer.from(key1), Buffer.from('value1'))
-      .commitSync();
+  benchUpdateValue(db, key1, 'value1');
+
+  obs.observe({ entryTypes: ['function'] });
 
   // delete value
-    db.batch()
-      .delete(Buffer.from(key1))
-      .commitSync();
+  benchDeleteKey(db, key1);
+
+  obs.observe({ entryTypes: ['function'] });
 
   // get merke root
-    let root = db.rootHash();
+    const root = benchGetRoot(db);
     console.log('new root', root);
+
+  obs.observe({ entryTypes: ['function'] });
 }
-
-
