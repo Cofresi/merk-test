@@ -22,6 +22,17 @@ let db = merk('./state.db');
 let value1;
 let key1;
 
+function commitBlock(db, inputDocuments) {
+  const batch = db.batch();
+  for (const keyValuePair of inputDocuments) {
+// put value
+    batch
+      .put(Buffer.from(keyValuePair.key), Buffer.from(keyValuePair.value))
+  }
+  batch.commitSync();
+  console.log(`block ${i + 1} inserted batch with ${BATCHSIZE} documents`);
+}
+
 function getValue(db, key) {
   return db.getSync(Buffer.from(key));
 }
@@ -48,6 +59,7 @@ function getRoot(db) {
   return db.rootHash();
 }
 
+const benchGommitBlock = performance.timerify(commitBlock);
 const benchGetValue = performance.timerify(getValue);
 const benchGetProof = performance.timerify(getProof);
 const benchUpdateValue = performance.timerify(updateValue);
@@ -56,12 +68,16 @@ const benchGetRoot = performance.timerify(getRoot);
 
 const obs = new PerformanceObserver((list) => {
   list.getEntries().forEach((entry) => {
-    console.log(entry.name, entry.duration);
+    if (entry.name === 'commitBlock') {
+      console.log(entry.name, `with ${BATCHSIZE} documents`, entry.duration, 'ms');
+    } else {
+      console.log(entry.name, entry.duration, 'ms');
+    }
   });
   obs.disconnect();
 });
 
-// get Merkle root
+// get merkle root
 let initialRoot = db.rootHash();
 console.log('initialRoot', initialRoot);
 
@@ -76,19 +92,16 @@ for (i = 0; i < DBSIZE / BATCHSIZE; i++) {
       key1 = dataContract.id;
     }
   }
-  const batch = db.batch();
-  for (const keyValuePair of inputDocuments) {
-// put value
-    batch
-      .put(Buffer.from(keyValuePair.key), Buffer.from(keyValuePair.value))
-  }
-  batch.commitSync();
-  console.log(`block ${i + 1} inserted batch with ${BATCHSIZE} documents`);
 
   // **** BENCHMARK OPS ****
 
+  // commit block
+  benchGommitBlock(db, inputDocuments);
+
+  obs.observe({ entryTypes: ['function'] });
+
   // get value
-    value1 = benchGetValue(db, key1);
+  value1 = benchGetValue(db, key1);
 
   obs.observe({ entryTypes: ['function'] });
 
