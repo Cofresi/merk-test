@@ -99,6 +99,8 @@ for (i = 0; i < DBSIZE / BATCHSIZE; i++) {
 
   // **** BENCHMARK OPS ****
 
+  obs.observe({ entryTypes: ['function'] });
+
   // commit block
   benchGommitBlock(db, inputDocuments);
 
