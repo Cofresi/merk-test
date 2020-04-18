@@ -14,7 +14,7 @@ const randomId = require(
 const BATCHSIZE = 1000;
 
 // absolute number of documents to insert into db in one run
-const DBSIZE = 10000000;
+const DBSIZE = 100000000;
 
 // create or load store
 let db = merk('./state.db');
