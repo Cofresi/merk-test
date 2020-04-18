@@ -109,9 +109,9 @@ for (i = 0; i < 1; i++) {
   obs.observe({ entryTypes: ['function'] });
 
   // create merkle proof
-  const proof1 = benchGetProof(db, key1);
-  console.log('proof1', proof1);
-  console.log(`proof size ${proof1.length} bytes, ${proof1.length/1000} kb`);
+  const proof = benchGetProof(db, key1);
+  console.log(`proof ${i + 1}`, proof);
+  console.log(`proof size ${proof.length} bytes, ${proof.length/1000} kb`);
 
   obs.observe({ entryTypes: ['function'] });
 
