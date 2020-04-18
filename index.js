@@ -89,12 +89,14 @@ const obs = new PerformanceObserver((list) => {
 let initialRoot = db.rootHash();
 console.log('initialRoot', initialRoot);
 
-for (i = 0; i < 2; i++) {
+for (i = 0; i < 1; i++) {
 
   // fill up inputDocuments array
   const inputDocuments = fillInputDocumentArray();
 
   // **** BENCHMARK OPS ****
+
+  obs.observe({ entryTypes: ['function'] });
 
   // commit block
   benchGommitBlock(db, inputDocuments);
