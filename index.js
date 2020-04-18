@@ -13,9 +13,7 @@ const BATCHSIZE = 1000;
 let db = merk('./state.db');
 
 let value1;
-let value2;
 let key1;
-let key1000;
 
 // get Merkle root
 let initialRoot = db.rootHash();
@@ -28,9 +26,6 @@ for (i = 0; i < BATCHSIZE; i++) {
   inputDocuments.push({ key: Buffer.from(dataContract.id, 'utf8'), value: bufDataContract });
   if (i === 0) {
     key1 = dataContract.id;
-  }
-  if (i === BATCHSIZE - 1) {
-    key1000 = dataContract.id;
   }
 }
 
@@ -45,42 +40,26 @@ console.log(`inserted batch with ${BATCHSIZE} documents`);
 
 // **** BENCHMARK OPS ****
 
-// get Merkle root
-let root = db.rootHash();
-console.log('new root', root);
-
-// get values
+// get value
 value1 = db.getSync(Buffer.from(key1));
-value2 = db.getSync(Buffer.from(key1000));
-console.log('key1', value1.toString());
-console.log('key1000', value2.toString());
 
 // create merkle proof
 const proof1 = db.prove([
   Buffer.from(key1)
 ]);
-const proof1000 = db.prove([
-  Buffer.from(key1000)
-]);
-
 console.log('proof1', proof1);
-console.log('proof1000', proof1000);
+console.log(`proof size ${proof1.length} bytes, ${proof1.length/1000} kb`);
 
-// update values
+// update value
 db.batch()
   .put(Buffer.from(key1), Buffer.from('value1'))
-  .put(Buffer.from(key1000), Buffer.from('value1000'))
   .commitSync();
 
-// get new Merkle root after update
-let root2 = db.rootHash();
-console.log('root2', root2);
-
-// delete values
+// delete value
 db.batch()
   .delete(Buffer.from(key1))
   .commitSync();
 
-// get Merkle root
-let root3 = db.rootHash();
-console.log('root3', root3);
+// get merke root
+let root = db.rootHash();
+console.log('new root', root);
