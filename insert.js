@@ -59,30 +59,7 @@ function getRoot(db) {
   return db.rootHash();
 }
 
-const benchGommitBlock = performance.timerify(commitBlock);
-const benchGetValue = performance.timerify(getValue);
-const benchGetProof = performance.timerify(getProof);
-const benchUpdateValue = performance.timerify(updateValue);
-const benchDeleteKey = performance.timerify(deleteKey);
-const benchGetRoot = performance.timerify(getRoot);
-
-const obs = new PerformanceObserver((list) => {
-  list.getEntries().forEach((entry) => {
-    if (entry.name === 'commitBlock') {
-      console.log(entry.name, `with ${BATCHSIZE} documents`, entry.duration, 'ms');
-    } else {
-      console.log(entry.name, entry.duration, 'ms');
-    }
-  });
-  obs.disconnect();
-});
-
-// get merkle root
-let initialRoot = db.rootHash();
-console.log('initialRoot', initialRoot);
-
-for (i = 0; i < DBSIZE / BATCHSIZE; i++) {
-
+function fillInputDocumentArray() {
   let inputDocuments = [];
   for (y = 0; y < BATCHSIZE; y++) {
     const dataContract = getDataContractFixture(randomId());
@@ -92,6 +69,33 @@ for (i = 0; i < DBSIZE / BATCHSIZE; i++) {
       key1 = dataContract.id;
     }
   }
+  return inputDocuments;
+}
+
+const benchGommitBlock = performance.timerify(commitBlock);
+const benchGetValue = performance.timerify(getValue);
+const benchGetProof = performance.timerify(getProof);
+const benchUpdateValue = performance.timerify(updateValue);
+const benchDeleteKey = performance.timerify(deleteKey);
+const benchGetRoot = performance.timerify(getRoot);
+
+const obs = new PerformanceObserver((list) => {
+  const entry = list.getEntries()[0];
+  if (entry.name === 'commitBlock') {
+    console.log(entry.name, `with ${BATCHSIZE} documents`, entry.duration, 'ms');
+  } else {
+    console.log(entry.name, entry.duration, 'ms');
+  }
+});
+
+// get merkle root
+let initialRoot = db.rootHash();
+console.log('initialRoot', initialRoot);
+
+for (i = 0; i < DBSIZE / BATCHSIZE; i++) {
+
+  // fill up inputDocuments array
+  const inputDocuments = fillInputDocumentArray();
 
   // **** BENCHMARK OPS ****
 
