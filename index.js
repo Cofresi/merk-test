@@ -16,9 +16,6 @@ const BATCHSIZE = 1000;
 // absolute number of documents to insert into db in one run
 const DBSIZE = 10000000;
 
-// create or load store
-let db = merk('./state.db');
-
 let value1;
 let key1;
 
@@ -78,6 +75,7 @@ const benchGetProof = performance.timerify(getProof);
 const benchUpdateValue = performance.timerify(updateValue);
 const benchDeleteKey = performance.timerify(deleteKey);
 const benchGetRoot = performance.timerify(getRoot);
+const benchfillInputDocumentArray = performance.timerify(fillInputDocumentArray);
 
 const obs = new PerformanceObserver((list) => {
   const entry = list.getEntries()[0];
@@ -85,14 +83,19 @@ const obs = new PerformanceObserver((list) => {
   obs.disconnect();
 });
 
+// create or load store
+const db = merk('./state.db');
+
 // get merkle root
 let initialRoot = db.rootHash();
 console.log('initialRoot', initialRoot);
 
 for (i = 0; i < 1; i++) {
 
+  obs.observe({ entryTypes: ['function'] });
+
   // fill up inputDocuments array
-  const inputDocuments = fillInputDocumentArray();
+  const inputDocuments = benchfillInputDocumentArray();
 
   // **** BENCHMARK OPS ****
 
