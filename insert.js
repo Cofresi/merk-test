@@ -16,9 +16,6 @@ const BATCHSIZE = 1000;
 // absolute number of documents to insert into db in one run
 const DBSIZE = 100000000;
 
-// create or load store
-let db = merk('./state.db');
-
 let value1;
 let key1;
 
@@ -88,6 +85,9 @@ const obs = new PerformanceObserver((list) => {
     console.log(entry.name, entry.duration, 'ms');
   }
 });
+
+// create or load store
+const db = merk('./state.db');
 
 // get merkle root
 let initialRoot = db.rootHash();
