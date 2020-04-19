@@ -78,6 +78,7 @@ const benchGetProof = performance.timerify(getProof);
 const benchUpdateValue = performance.timerify(updateValue);
 const benchDeleteKey = performance.timerify(deleteKey);
 const benchGetRoot = performance.timerify(getRoot);
+const benchfillInputDocumentArray = performance.timerify(fillInputDocumentArray);
 
 const obs = new PerformanceObserver((list) => {
   const entry = list.getEntries()[0];
@@ -94,8 +95,10 @@ console.log('initialRoot', initialRoot);
 
 for (i = 0; i < DBSIZE / BATCHSIZE; i++) {
 
+  obs.observe({ entryTypes: ['function'] });
+
   // fill up inputDocuments array
-  const inputDocuments = fillInputDocumentArray();
+  const inputDocuments = benchfillInputDocumentArray();
 
   // **** BENCHMARK OPS ****
 
