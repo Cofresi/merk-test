@@ -40,6 +40,12 @@ function getProof(db, key) {
   ]);
 }
 
+function put(db, key, value) {
+  db.batch()
+    .put(Buffer.from(key), Buffer.from(value))
+    .commitSync();
+}
+
 function updateValue(db, key, value) {
   db.batch()
     .put(Buffer.from(key), Buffer.from(value))
