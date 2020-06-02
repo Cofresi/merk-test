@@ -16,6 +16,7 @@ const ENDIAN = 'big';
 
 let value1;
 let key1;
+const isMac = process.platform === "darwin";
 
 function commitBlock(db, inputDocuments) {
   const batch = db.batch();
@@ -33,7 +34,12 @@ function getValue(db, key) {
 }
 
 function getProof(db, key) {
-  return db.prove([
+  if (isMac) {
+    return db.prove([
+      Buffer.from(key)
+    ]);
+  }
+  return db.proveSync([
     Buffer.from(key)
   ]);
 }
