@@ -12,6 +12,7 @@ const randomId = require(
 
 // number of documents to put into db with one commit
 const BATCHSIZE = 1000000;
+const ENDIAN = 'big';
 
 let value1;
 let key1;
@@ -154,10 +155,10 @@ for (i = 0; i < 1; i++) {
 
   obs.observe({ entryTypes: ['function'] });
 
-  console.log(`Fill up tree with ${BATCHSIZE} sequential keys`);
+  console.log(`Fill up tree with ${BATCHSIZE} sequential keys`, `${ENDIAN} endian`);
 
   // fill up inputDocuments array with sequential keys
-  const inputDocuments2 = benchfillInputDocumentArray(false, 'little');
+  const inputDocuments2 = benchfillInputDocumentArray(false, ENDIAN);
 
   // **** BENCHMARK OPS ****
 
@@ -190,7 +191,7 @@ for (i = 0; i < 1; i++) {
 
   obs.observe({ entryTypes: ['function'] });
 
-  // get merke root
+  // get merkle root
   const root2 = benchGetRoot(db2);
   console.log('new root', root2);
 
