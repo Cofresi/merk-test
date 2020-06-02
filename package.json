@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Benchmarks for Merk tree nodejs bindings",
   "dependencies": {
-    "@dashevo/dpp": "~0.12.0-dev.8",
+    "@dashevo/dpp": "~0.13.0-dev.8",
     "merk": "Cofresi/node-merk#fix-linux"
   }
 }
