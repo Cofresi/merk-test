@@ -2,8 +2,14 @@
   "name": "merk-test",
   "version": "0.0.2",
   "description": "Benchmarks for Merk tree nodejs bindings",
+  "author": "Cofresi <cofresi@dash.org>",
+  "license": "MIT",
   "dependencies": {
     "@dashevo/dpp": "~0.13.0-dev.8",
     "merk": "Cofresi/node-merk#fix-linux"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cofresi/merk-test.git"
   }
 }
