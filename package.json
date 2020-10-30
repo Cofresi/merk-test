@@ -5,7 +5,7 @@
   "author": "Cofresi <cofresi@dash.org>",
   "license": "MIT",
   "dependencies": {
-    "@dashevo/dpp": "~0.13.0-dev.8",
+    "@dashevo/dpp": "0.16.0",
     "merk": "Cofresi/node-merk#fix-linux"
   },
   "repository": {
