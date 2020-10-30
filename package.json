@@ -1,6 +1,6 @@
 {
   "name": "merk-test",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Benchmarks for Merk tree nodejs bindings",
   "author": "Cofresi <cofresi@dash.org>",
   "license": "MIT",
