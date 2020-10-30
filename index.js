@@ -4,10 +4,7 @@ const {
   PerformanceObserver
 } = require('perf_hooks');
 const getDataContractFixture = require(
-  '@dashevo/dpp/lib/test/fixtures/getDataContractFixture',
-);
-const randomId = require(
-  '@dashevo/dpp/lib/test/utils/generateRandomId',
+  '@dashevo/dpp/lib/test/fixtures/getDocumentsFixture',
 );
 
 // number of documents to put into db with one commit
@@ -65,11 +62,11 @@ function getRoot(db) {
 function fillInputDocumentArray() {
   let inputDocuments = [];
   for (y = 0; y < BATCHSIZE; y++) {
-    const dataContract = getDataContractFixture(randomId());
+    const dataContract = getDataContractFixture();
     const bufDataContract = Buffer.from(JSON.stringify(dataContract));
-    inputDocuments.push({ key: Buffer.from(dataContract.id, 'utf8'), value: bufDataContract });
+    inputDocuments.push({ key: Buffer.from(dataContract[0].ownerId, 'utf8'), value: bufDataContract });
     if (y === 0) {
-      key1 = dataContract.id;
+      key1 = dataContract.ownerId;
     }
   }
   return inputDocuments;
