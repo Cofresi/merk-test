@@ -27,7 +27,7 @@ function createRpcClient(config = {}) {
 }
 async function init() {
   const client = createRpcClient();
-  const result = await client.getBlockCount();
+  const result = await client.quorum('list');
   console.log('res', result);
 }
 init();
