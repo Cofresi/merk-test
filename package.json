@@ -5,6 +5,7 @@
   "author": "Cofresi <cofresi@dash.org>",
   "license": "MIT",
   "dependencies": {
+    "@dashevo/dashd-rpc": "dashevo/dashd-rpc#quorumInfo",
     "@dashevo/dpp": "0.16.0",
     "merk": "Cofresi/node-merk#fix-linux"
   },
