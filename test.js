@@ -29,7 +29,7 @@ async function init() {
   const client = createRpcClient();
   let result;
   try {
-    result = await client.quorum('info 1 0000001cf53b5489691d2681e49228a6f2955040c3f0da361b73463d241db452');
+    result = await client.quorum('info', 1, '000000000000000f3bceed610a251eae4f9f3b462b13b4f621d55729072c106c');
   } catch (e) {
     // Non-existent quorumHash-llmqType combination
       throw e;
