@@ -27,7 +27,12 @@ function createRpcClient(config = {}) {
 }
 async function init() {
   const client = createRpcClient();
-  const result = await client.quorum('info 1 0000001cf53b5489691d2681e49228a6f2955040c3f0da361b73463d241db452');
+  try {
+    const result = await client.quorum('info 1 0000001cf53b5489691d2681e49228a6f2955040c3f0da361b73463d241db452');
+  } catch (e) {
+    // Non-existent quorumHash-llmqType combination
+      throw e;
+  }
   console.log('res', result);
 }
 init();
